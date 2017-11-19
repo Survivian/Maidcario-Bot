@@ -1,8 +1,8 @@
 {
-  "name": "Kushala-Bot",
+  "name": "Maidcario",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "maid.js",
   "dependencies": {
     "discord.js": "^11.2.1",
     "enmap": "^0.4.2",
