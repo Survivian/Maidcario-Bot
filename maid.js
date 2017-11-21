@@ -1,3 +1,4 @@
+//requirements
 const Discord = require("discord.js");
 const fs = require("fs");
 const client = new Discord.Client();
@@ -6,17 +7,20 @@ const config = require("./config.json");
 sql.open("./score.sqlite");
 
 
-
+//Ready to go!
 client.on("ready", () => {
   client.user.setGame("==help for more info")
   console.log("Chu ~!");
 });
 
 client.on("message", function(message) {
+  //initialization
   if (!message.content.startsWith(config.prefix) || message.author.bot || message.channel.type === "dm") return;
   const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
   var player = message.author
+
+  //commands are in if statements
   if (command === "ping") {
     message.channel.send("Pong ~!:ping_pong:")
   };
@@ -85,6 +89,7 @@ client.on("message", function(message) {
       message.reply(`I can't track someone who's not registered....`)
       })}
   };
+
   if (command === "awl") {
     let member = message.mentions.members.first();
     let wl = args[1];
@@ -93,22 +98,23 @@ client.on("message", function(message) {
         console.log(row.wins + (args[2] * 1))
         console.log((row.wins + (args[2] * 1)) + (row.losses * 1))
         console.log((row.wins + (args[2] * 1)) / ((row.wins + (args[2] * 1)) + (row.losses * 1)))
-        sql.run(`UPDATE score SET wins = ${row.wins + (args[2] * 1)}, 
-        matches = ${(row.wins + (args[2] * 1)) + (row.losses * 1)}, 
-        percent = ${Math.floor((row.wins + (args[2] * 1)) / ((row.wins + (args[2] * 1)) + (row.losses * 1)) * 1000) / 10} 
+        sql.run(`UPDATE score SET wins = ${row.wins + (args[2] * 1)},
+        matches = ${(row.wins + (args[2] * 1)) + (row.losses * 1)},
+        percent = ${Math.floor((row.wins + (args[2] * 1)) / ((row.wins + (args[2] * 1)) + (row.losses * 1)) * 1000) / 10}
         WHERE userId = ${member.id}`)
       };
       if (wl === "l") {
         console.log(row.losses + (args[2] * 1))
         console.log((row.losses + (args[2] * 1)) + (row.wins * 1))
         console.log((row.losses + (args[2] * 1)) / ((row.losses + (args[2] * 1)) + (row.wins * 1)))
-        sql.run(`UPDATE score SET losses = ${row.losses + (args[2] * 1)}, 
-        matches = ${(row.losses + (args[2] * 1)) + (row.wins * 1)}, 
-        percent = ${Math.floor((row.losses + (args[2] * 1)) / ((row.losses + (args[2] * 1)) + (row.wins * 1)) * 1000) / 10} 
+        sql.run(`UPDATE score SET losses = ${row.losses + (args[2] * 1)},
+        matches = ${(row.losses + (args[2] * 1)) + (row.wins * 1)},
+        percent = ${Math.floor((row.losses + (args[2] * 1)) / ((row.losses + (args[2] * 1)) + (row.wins * 1)) * 1000) / 10}
         WHERE userId = ${member.id}`)
       };
     })
   };
+
   if (command === "swl") {
     let member = message.mentions.members.first();
     let wl = args[1]
