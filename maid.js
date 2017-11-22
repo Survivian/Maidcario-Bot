@@ -11,7 +11,14 @@ sql.open("./score.sqlite");
 client.on("ready", () => {
   client.user.setGame("==help for more info")
   console.log("Chu ~!");
+  //testing a non-fatal infinite loop
+  var cycleCount = 0;
+  cycles();
 });
+
+function cycles() {
+    setTimeout(function(){cycleCount++; console.log("CYCLE INCREASE: "cycleCount); cycles(); }, 10000);
+}
 
 client.on("message", function(message) {
   //initialization
@@ -26,7 +33,7 @@ client.on("message", function(message) {
   //commands are in if statements
   //Throw-away command. It's just here to make sure that everything works right.
   if (command === "ping") {
-    message.channel.send("Pong ~!:ping_pong:")
+    message.channel.send("Pong ~!:ping_pong: I\'ve been alive for " + cycleCount + " 10 second cycles.")
   };
   if (command === "wl") { if (!args[0]) {
     //I know what this command does, but I have no idea how to use sqlite as a whole.
@@ -117,8 +124,8 @@ client.on("message", function(message) {
         console.log((row.wins + (args[2] * 1)) / ((row.wins + (args[2] * 1)) + (row.losses * 1)))
         //If row.wins = 1 AND a = (arg[2] * 1) = 5, then row.wins + a = 15.
         sql.run(`UPDATE score SET wins = ${row.wins + (args[2] * 1)},
-        matches = ${(row.wins + (args[2] * 1)) + (row.losses * 1)}, 
-        percent = ${Math.floor((row.wins + (args[2] * 1)) / ((row.wins + (args[2] * 1)) + (row.losses * 1)) * 1000) / 10} 
+        matches = ${(row.wins + (args[2] * 1)) + (row.losses * 1)},
+        percent = ${Math.floor((row.wins + (args[2] * 1)) / ((row.wins + (args[2] * 1)) + (row.losses * 1)) * 1000) / 10}
         WHERE userId = ${member.id}`)
         //Which obviously isn't what I want.
         //Until we can figure out a way to make it not do that and make it look neater, this is what we're working with.
