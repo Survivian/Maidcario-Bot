@@ -11,14 +11,13 @@ sql.open("./score.sqlite");
 client.on("ready", () => {
   client.user.setGame("==help for more info")
   console.log("Chu ~!");
-  //testing a non-fatal infinite loop
-  
 });
-var cycleCount = 0;
-  cycles();
 
+//Reports life time without killing her processing.
+var cycleCount = 0;
+cycles();
 function cycles() {
-    setTimeout(function(){cycleCount++; console.log("CYCLE INCREASE: " + cycleCount); cycles(); }, 10000);
+    setTimeout(function(){cycleCount++; console.log("CYCLE INCREASE: " + cycleCount); cycles(); }, 240000);
 }
 
 client.on("message", function(message) {
@@ -34,7 +33,7 @@ client.on("message", function(message) {
   //commands are in if statements
   //Throw-away command. It's just here to make sure that everything works right.
   if (command === "ping") {
-    message.channel.send("Pong ~!:ping_pong: I\'ve been alive for " + cycleCount + " 10 second cycles.")
+    message.channel.send("Pong ~!:ping_pong: I\'ve been alive for " + cycleCount + " 4 minute cycles.")
   };
   if (command === "wl") { if (!args[0]) {
     //I know what this command does, but I have no idea how to use sqlite as a whole.
