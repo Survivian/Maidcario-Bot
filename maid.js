@@ -12,12 +12,13 @@ client.on("ready", () => {
   client.user.setGame("==help for more info")
   console.log("Chu ~!");
   //testing a non-fatal infinite loop
-  var cycleCount = 0;
-  cycles();
+  
 });
+var cycleCount = 0;
+  cycles();
 
 function cycles() {
-    setTimeout(function(){cycleCount++; console.log("CYCLE INCREASE: "cycleCount); cycles(); }, 10000);
+    setTimeout(function(){cycleCount++; console.log("CYCLE INCREASE: " + cycleCount); cycles(); }, 10000);
 }
 
 client.on("message", function(message) {
