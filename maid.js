@@ -17,7 +17,7 @@ client.on("ready", () => {
 var cycleCount = 0;
 cycles();
 function cycles() {
-    setTimeout(function(){cycleCount++; console.log("CYCLE INCREASE: " + cycleCount); cycles(); }, 240000);
+    setTimeout(function(){cycleCount++; console.log("CYCLE INCREASE: " + cycleCount); cycles(); }, 60000);
 }
 
 client.on("message", function(message) {
@@ -33,7 +33,8 @@ client.on("message", function(message) {
   //commands are in if statements
   //Throw-away command. It's just here to make sure that everything works right.
   if (command === "ping") {
-    message.channel.send("Pong ~!:ping_pong: I\'ve been alive for " + cycleCount + " 4 minute cycles.")
+    message.channel.send("Pong ~! :ping_pong:");
+    message.channel.send("I haven\'t slept in " + (cycleCount) + " minutes!")
   };
   if (command === "wl") { if (!args[0]) {
     //I know what this command does, but I have no idea how to use sqlite as a whole.
