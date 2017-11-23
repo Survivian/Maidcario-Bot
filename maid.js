@@ -38,7 +38,7 @@ function cycles() {
       cycleTotal = "I've been awake for " + (cycleMinutes) + " minutes.... *yawn* Not much of an early bird.... Not much of a bird....";
     }
     else if (cycleHours == 0 && cycleDays == 0){
-      if (cycleTotal == 1) {
+      if (cycleMinutes == 1) {
         cycleTotal = "I've been awake for " + cycleMinutes + " minute ~! Just starting my day."
       } else {
         cycleTotal = "I've been awake for " + cycleMinutes + " minutes ~! Just starting my day.";
