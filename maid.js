@@ -13,6 +13,112 @@ client.on("ready", () => {
   console.log("Chu ~!");
 });
 
+//Reports life time without killing her processing.
+var cycleMinutes = 0;
+var cycleHours = 0;
+var cycleDays = 0;
+var cycleTotal;
+cycles();
+
+//New life cycle reporter.
+function cycles() {
+  //counting mechanism
+    if (cycleMinutes >= 60){
+      cycleHours++;
+      cycleMinutes = 0;
+    }
+    else if (cycleHours >= 24) {
+      cycleDays++;
+      cycleHours = 0;
+    }
+
+    //Conditional reporting of life cycle.
+    //Minutes.
+    if (cycleMinutes <= 5 && cycleHours == 0 && cycleDays == 0) {
+      cycleTotal = "I've been awake for " + (cycleMinutes) + " minutes.... *yawn* Not much of an early bird.... Not much of a bird....";
+    }
+    else if (cycleHours == 0 && cycleDays == 0){
+      if (cycleMinutes == 1) {
+        cycleTotal = "I've been awake for " + cycleMinutes + " minute ~! Just starting my day."
+      } else {
+        cycleTotal = "I've been awake for " + cycleMinutes + " minutes ~! Just starting my day.";
+    }}
+
+    //Hours.
+    else if (cycleHours > 0 && cycleDays == 0) {
+      //Precision.
+      if (cycleHours == 1) {
+        if (cycleMinutes == 0) {
+          cycleTotal = "I've been awake for " + (cycleHours) + " hour ~! Ready to serve!"
+        } else if (cycleMinutes == 1) {
+          cycleTotal = "I've been awake for " + (cycleHours) + " hour and " + (cycleMinutes) + " minute ~! Ready to serve!"
+        } else if (cycleMinutes > 1) {
+          cycleTotal = "I've been awake for " + (cycleHours) + " hour and " + (cycleMinutes) + " minutes ~! Ready to serve!"
+        }
+      } else if (cycleHours > 1) {
+        if (cycleMinutes == 0) {
+          cycleTotal = "I've been awake for " + (cycleHours) + " hours ~! Ready to serve!"
+        } else if (cycleMinutes == 1) {
+          cycleTotal = "I've been awake for " + (cycleHours) + " hours and " + (cycleMinutes) + " minute ~! Ready to serve!"
+        } else if (cycleMinutes > 1) {
+          cycleTotal = "I've been awake for " + (cycleHours) + " hours and " + (cycleMinutes) + " minutes ~! Ready to serve!"
+        }
+      }
+    }
+
+    //Days.
+    else if (cycleDays > 0) {
+      if (cycleHours == 0 && cycleMinutes == 0) {
+        if (cycleDays == 1) {
+        cycleTotal = "I've been awake for exactly " + cycleDays + " day ~! How precise of me.";
+      } else if (cycledays > 1) {
+        cycleTotal = "I've been awake for exactly " + cycleDays + " days ~! *yawn* How precise... of... me.";
+      }}
+      else if (cycleHours == 0 && cycleMinutes > 0) {
+        if (cycleDays == 1 && cycleMinutes == 0) {
+        cycleTotal = "I've been awake for " + cycleDays + " day and " + cycleMinutes + " minute ~! Ready to serve!";
+      } else if (cycleDays == 1 && cycleMinutes > 1) {
+        cycleTotal = "I've been awake for " + cycleDays + " day and " + cycleMinutes + " minutes ~! Ready to serve!"
+      } else if (cycleDays > 1 && cycleMinutes > 1){
+        cycleTotal = "I've been awake for " + cycleDays + " days and " + cycleMinutes + " minutes ~! Ready to serve!"
+      }}
+      else if (cycleHours > 0 && cycleMinutes == 0) {
+        if (cycleDays == 1 && cycleHours == 1) {
+          cycleTotal = "I've been awake for " + cycleDays + " day and " + cycleHours + " hour ~! Ready to serve! But I sure am sleepy....";
+        } else if (cycleDays == 1 && cycleHours > 1) {
+          cycleTotal = "I've been awake for " + cycleDays + " day and " + cycleHours + " hours ~! Ready to serve! But I sure am sleepy....";
+        } else if (cycleDays > 1 && cycleMinutes > 1){
+          cycleTotal = "I've been awake for " + cycleDays + " days and " + cycleHours + " hours ~! Ready to serve! But I sure am sleepy....";
+      }}
+      else if (cycleHours > 0 && cycleMinutes > 0) {
+        if (cycleDays == 1) {
+          if (cyclehours == 1 && cycleMinutes > 1) {
+            cycleTotal = "I've been awake for " + cycleDays + " day, " + cycleHours + " hour, and " + (cycleMinutes) + " minutes ~! Ready to serve! But I sure am sleepy...."
+          } else if (cyclehours > 1 && cycleMinutes == 1) {
+            cycleTotal = "I've been awake for " + cycleDays + " day, " + cycleHours + " hours, and " + (cycleMinutes) + " minute ~! Ready to serve! But I sure am sleepy...."
+          } else if (cycleHours == 1 && cycleMinutes == 1) {
+            cycleTotal = "I've been awake for " + cycleDays + " day, " + cycleHours + " hour, and " + (cycleMinutes) + " minute ~! Ready to serve! But I sure am sleepy...."
+          } else if (cycleHours > 1 && cycleMinutes > 1) {
+            cycleTotal = "I've been awake for " + cycleDays + " day, " + cycleHours + " hours, and " + (cycleMinutes) + " minutes ~! Ready to serve! But I sure am sleepy...."
+          }
+        } else if (cycleDays > 1) {
+          if (cyclehours == 1 && cycleMinutes > 1) {
+            cycleTotal = "I've been awake for " + cycleDays + " days, " + cycleHours + " hour, and " + (cycleMinutes) + " minutes ~! Ready to serve! But I sure am sleepy...."
+          } else if (cyclehours > 1 && cycleMinutes == 1) {
+            cycleTotal = "I've been awake for " + cycleDays + " days, " + cycleHours + " hours, and " + (cycleMinutes) + " minute ~! Ready to serve! But I sure am sleepy...."
+          } else if (cycleHours == 1 && cycleMinutes == 1) {
+            cycleTotal = "I've been awake for " + cycleDays + " days, " + cycleHours + " hour, and " + (cycleMinutes) + " minute ~! Ready to serve! But I sure am sleepy...."
+          } else if (cycleHours > 1 && cycleMinutes > 1) {
+            cycleTotal = "I've been awake for " + cycleDays + " days, " + cycleHours + " hours, and " + (cycleMinutes) + " minutes ~! Ready to serve! But I sure am sleepy...."
+          }
+        }
+      };
+    }
+
+    //Wait the proper amount of time before updating. This needs to be at the end, as anything below likely won't get done.
+    setTimeout(function(){cycleMinutes++; console.log("Lifecycle: " + cycleDays + "d, " + cycleHours + "h, " + cycleMinutes + "m."); cycles(); }, 60000);
+}
+
 client.on("message", function(message) {
   //initialization
   //Prevents use of bot within DMs, without using the prefix, and prevents bots from feeding into each other.
@@ -26,7 +132,8 @@ client.on("message", function(message) {
   //commands are in if statements
   //Throw-away command. It's just here to make sure that everything works right.
   if (command === "ping") {
-    message.channel.send("Pong ~!:ping_pong:")
+    message.channel.send("Pong ~! :ping_pong:");
+    message.channel.send(cycleTotal)
   };
   if (command === "wl") { if (!args[0]) {
     //I know what this command does, but I have no idea how to use sqlite as a whole.
@@ -117,8 +224,8 @@ client.on("message", function(message) {
         console.log((row.wins + (args[2] * 1)) / ((row.wins + (args[2] * 1)) + (row.losses * 1)))
         //If row.wins = 1 AND a = (arg[2] * 1) = 5, then row.wins + a = 15.
         sql.run(`UPDATE score SET wins = ${row.wins + (args[2] * 1)},
-        matches = ${(row.wins + (args[2] * 1)) + (row.losses * 1)}, 
-        percent = ${Math.floor((row.wins + (args[2] * 1)) / ((row.wins + (args[2] * 1)) + (row.losses * 1)) * 1000) / 10} 
+        matches = ${(row.wins + (args[2] * 1)) + (row.losses * 1)},
+        percent = ${Math.floor((row.wins + (args[2] * 1)) / ((row.wins + (args[2] * 1)) + (row.losses * 1)) * 1000) / 10}
         WHERE userId = ${member.id}`)
         //Which obviously isn't what I want.
         //Until we can figure out a way to make it not do that and make it look neater, this is what we're working with.
