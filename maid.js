@@ -14,10 +14,59 @@ client.on("ready", () => {
 });
 
 //Reports life time without killing her processing.
-var cycleCount = 0;
+var cycleMinutes = 0;
+var cycleHours = 0;
+var cycleDays = 0;
+var cycleTotal;
 cycles();
+
+//New life cycle reporter.
 function cycles() {
-    setTimeout(function(){cycleCount++; console.log("CYCLE INCREASE: " + cycleCount); cycles(); }, 60000);
+  //counting mechanism
+    if (cycleMinutes >= 60){
+      cycleHours++;
+      cycleMinutes = 0;
+    }
+    else if (cycleHours >= 24) {
+      cycleDays++;
+      cycleHours = 0;
+    }
+
+    //Conditional reporting of life cycle.
+    //Minutes.
+    if (cycleMinutes <= 5 && cycleHours == 0 && cycleDays == 0) {
+      cycleTotal = "I've been awake for " + cycleMinutes + " minute(s). *yawn* I'm not really a morning person....";
+    }
+    else if (cycleHours == 0 && cycleDays == 0){
+      cycleTotal = "I've been awake for " + cycleMinutes + " minute(s)~! Just starting my day.";
+    }
+
+    //Hours.
+    else if (cycleHours > 0) {
+      //Precision.
+      if (cycleMinutes == 0) {
+        cycleTotal = "I've been awake for exactly " + cycleHours + " hour(s)~! Ready to serve!";
+      }
+      else {
+      cycleTotal = "I've been awake for " + cycleHours + " hours and " + cycleMinutes + " minutes~! Ready to serve!";
+      };
+    }
+
+    //Days.
+    else if (cycleDays > 0) {
+      if (cycleHours == 0 && cycleMinutes == 0) {
+        cycleTotal = "I've been awake for exactly " + cycleDays + " day(s)~! How precise of me.";
+      }
+      else if (cycleHours == 0 && cycleMinutes > 0) {
+        cycleTotal = "I've been awake for " + cycleHours + " hours(s) and " + cycleMinutes + " minutes~! Ready to serve!";
+      }
+      else {
+      cycleTotal = "I've been awake for " + cycleDays + " days, " + cycleHours + " hours, and " + cycleMinutes + " minutes~! Ready to serve! ...But a nap might be in order...";
+      };
+    }
+
+    //Wait the proper amount of time before updating. This needs to be at the end, as anything below likely won't get done.
+    setTimeout(function(){cycleMinutes++; console.log("Lifecycle: " + cycleDays + "d, " + cycleHours + "h, " + cycleMinutes + "m."); cycles(); }, 100);
 }
 
 client.on("message", function(message) {
