@@ -13,14 +13,17 @@ client.on("ready", () => {
   console.log("Chu ~!");
 });
 
-//Reports life time without killing her processing.
+//Variables go here.
+//For life cycle.
 var cycleMinutes = 0;
 var cycleHours = 0;
 var cycleDays = 0;
 var cycleTotal;
-cycles();
+//XMLHttp.
+var xhttp = new XMLHttpRequest();
 
 //New life cycle reporter.
+cycles();
 function cycles() {
   //counting mechanism
     if (cycleMinutes >= 60){
@@ -258,6 +261,22 @@ client.on("message", function(message) {
       }
     });
   };
+
+  //testing testing, 1-2-3.
+  if (command === "import"){
+    xhttp.withCredentials = true;
+    xhttp.open("GET", "https://api.challonge.com/v1/tournaments/bmwtc1/participants.json?api_key=I0dBjsWuPpieSlJejueLZvu7lzDuQIVwZHLkqAIT");
+    xhttp.send();
+
+    xhttp.onload = function() {
+      message.channel.send(xhttp.responseText);
+      // process the response.
+    };
+    xhttp.onerror = function() {
+      message.channel.send('There was an error!');
+      message.channel.send(xhttp.status);
+    };
+  }
 });
 //Login information. Separate file to keep from bad things happening.
 client.login(config.token);
