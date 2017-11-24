@@ -270,7 +270,7 @@ client.on("message", function(message) {
     console.log(xhttp.status);
     console.log(xhttp.statusText);
     //Shows the JSON in chat.
-    message.channel.send("```JSON \n" + xhttp.responseText + "```");
+    message.channel.send("```JSON\n" + xhttp.responseText + "```");
   }
 });
 //Login information. Separate file to keep from bad things happening.
