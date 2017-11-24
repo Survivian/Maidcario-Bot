@@ -1,4 +1,3 @@
-/*jshint esversion:6*/
 //The bot kinda needs these things to do things.
 const Discord = require("discord.js");
 const fs = require("fs");
@@ -39,10 +38,10 @@ function cycles() {
 
     //Conditional reporting of life cycle.
     //Minutes.
-    if (cycleMinutes <= 5 && cycleHours == 0 && cycleDays == 0) {
+    if (cycleMinutes <= 5 && cycleHours === 0 && cycleDays === 0) {
       cycleTotal = "I've been awake for " + (cycleMinutes) + " minutes.... *yawn* Not much of an early bird....";
     }
-    else if (cycleHours == 0 && cycleDays == 0){
+    else if (cycleHours === 0 && cycleDays === 0){
       if (cycleMinutes == 1) {
         cycleTotal = "I've been awake for " + cycleMinutes + " minute ~! Just starting my day.";
       } else {
@@ -50,10 +49,10 @@ function cycles() {
     }}
 
     //Hours.
-    else if (cycleHours > 0 && cycleDays == 0) {
+    else if (cycleHours > 0 && cycleDays === 0) {
       //Precision.
       if (cycleHours == 1) {
-        if (cycleMinutes == 0) {
+        if (cycleMinutes === 0) {
           cycleTotal = "I've been awake for " + (cycleHours) + " hour ~! Ready to serve!";
         } else if (cycleMinutes == 1) {
           cycleTotal = "I've been awake for " + (cycleHours) + " hour and " + (cycleMinutes) + " minute ~! Ready to serve!";
@@ -61,7 +60,7 @@ function cycles() {
           cycleTotal = "I've been awake for " + (cycleHours) + " hour and " + (cycleMinutes) + " minutes ~! Ready to serve!";
         }
       } else if (cycleHours > 1) {
-        if (cycleMinutes == 0) {
+        if (cycleMinutes === 0) {
           cycleTotal = "I've been awake for " + (cycleHours) + " hours ~! Ready to serve!";
         } else if (cycleMinutes == 1) {
           cycleTotal = "I've been awake for " + (cycleHours) + " hours and " + (cycleMinutes) + " minute ~! Ready to serve!";
@@ -73,21 +72,21 @@ function cycles() {
 
     //Days.
     else if (cycleDays > 0) {
-      if (cycleHours == 0 && cycleMinutes == 0) {
+      if (cycleHours === 0 && cycleMinutes === 0) {
         if (cycleDays == 1) {
         cycleTotal = "I've been awake for exactly " + cycleDays + " day ~! How precise of me.";
-      } else if (cycledays > 1) {
+      } else if (cycleDays > 1) {
         cycleTotal = "I've been awake for exactly " + cycleDays + " days ~! *yawn* How precise... of... me.";
       }}
-      else if (cycleHours == 0 && cycleMinutes > 0) {
-        if (cycleDays == 1 && cycleMinutes == 0) {
+      else if (cycleHours === 0 && cycleMinutes > 0) {
+        if (cycleDays == 1 && cycleMinutes === 0) {
         cycleTotal = "I've been awake for " + cycleDays + " day and " + cycleMinutes + " minute ~! Ready to serve!";
       } else if (cycleDays == 1 && cycleMinutes > 1) {
         cycleTotal = "I've been awake for " + cycleDays + " day and " + cycleMinutes + " minutes ~! Ready to serve!";
       } else if (cycleDays > 1 && cycleMinutes > 1){
         cycleTotal = "I've been awake for " + cycleDays + " days and " + cycleMinutes + " minutes ~! Ready to serve!";
       }}
-      else if (cycleHours > 0 && cycleMinutes == 0) {
+      else if (cycleHours > 0 && cycleMinutes === 0) {
         if (cycleDays == 1 && cycleHours == 1) {
           cycleTotal = "I've been awake for " + cycleDays + " day and " + cycleHours + " hour ~! Ready to serve! But I sure am sleepy....";
         } else if (cycleDays == 1 && cycleHours > 1) {
@@ -97,9 +96,9 @@ function cycles() {
       }}
       else if (cycleHours > 0 && cycleMinutes > 0) {
         if (cycleDays == 1) {
-          if (cyclehours == 1 && cycleMinutes > 1) {
+          if (cycleHours == 1 && cycleMinutes > 1) {
             cycleTotal = "I've been awake for " + cycleDays + " day, " + cycleHours + " hour, and " + (cycleMinutes) + " minutes ~! Ready to serve! But I sure am sleepy....";
-          } else if (cyclehours > 1 && cycleMinutes == 1) {
+          } else if (cycleHours > 1 && cycleMinutes == 1) {
             cycleTotal = "I've been awake for " + cycleDays + " day, " + cycleHours + " hours, and " + (cycleMinutes) + " minute ~! Ready to serve! But I sure am sleepy....";
           } else if (cycleHours == 1 && cycleMinutes == 1) {
             cycleTotal = "I've been awake for " + cycleDays + " day, " + cycleHours + " hour, and " + (cycleMinutes) + " minute ~! Ready to serve! But I sure am sleepy....";
@@ -107,9 +106,9 @@ function cycles() {
             cycleTotal = "I've been awake for " + cycleDays + " day, " + cycleHours + " hours, and " + (cycleMinutes) + " minutes ~! Ready to serve! But I sure am sleepy....";
           }
         } else if (cycleDays > 1) {
-          if (cyclehours == 1 && cycleMinutes > 1) {
+          if (cycleHours == 1 && cycleMinutes > 1) {
             cycleTotal = "I've been awake for " + cycleDays + " days, " + cycleHours + " hour, and " + (cycleMinutes) + " minutes ~! Ready to serve! But I sure am sleepy....";
-          } else if (cyclehours > 1 && cycleMinutes == 1) {
+          } else if (cycleHours > 1 && cycleMinutes == 1) {
             cycleTotal = "I've been awake for " + cycleDays + " days, " + cycleHours + " hours, and " + (cycleMinutes) + " minute ~! Ready to serve! But I sure am sleepy....";
           } else if (cycleHours == 1 && cycleMinutes == 1) {
             cycleTotal = "I've been awake for " + cycleDays + " days, " + cycleHours + " hour, and " + (cycleMinutes) + " minute ~! Ready to serve! But I sure am sleepy....";
