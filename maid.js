@@ -269,6 +269,8 @@ client.on("message", function(message) {
     xhttp.send();
     console.log(xhttp.status);
     console.log(xhttp.statusText);
+    //Shows the JSON in chat.
+    message.channel.send("```JSON \n" + xhttp.responseText + "```");
   }
 });
 //Login information. Separate file to keep from bad things happening.
