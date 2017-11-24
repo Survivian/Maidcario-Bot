@@ -4,6 +4,7 @@ const fs = require("fs");
 const client = new Discord.Client();
 const sql = require("sqlite");
 const config = require("./config.json");
+const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 sql.open("./score.sqlite");
 
 
@@ -264,18 +265,10 @@ client.on("message", function(message) {
 
   //testing testing, 1-2-3.
   if (command === "import"){
-    xhttp.withCredentials = true;
-    xhttp.open("GET", "https://api.challonge.com/v1/tournaments/bmwtc1/participants.json?api_key=I0dBjsWuPpieSlJejueLZvu7lzDuQIVwZHLkqAIT");
+    xhttp.open("GET", "https://Maidcario:I0dBjsWuPpieSlJejueLZvu7lzDuQIVwZHLkqAIT@api.challonge.com/v1/tournaments.json/" , false);
     xhttp.send();
-
-    xhttp.onload = function() {
-      message.channel.send(xhttp.responseText);
-      // process the response.
-    };
-    xhttp.onerror = function() {
-      message.channel.send('There was an error!');
-      message.channel.send(xhttp.status);
-    };
+    console.log(xhttp.status);
+    console.log(xhttp.statusText);
   }
 });
 //Login information. Separate file to keep from bad things happening.
