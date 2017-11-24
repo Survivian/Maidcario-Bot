@@ -40,7 +40,7 @@ function cycles() {
     //Conditional reporting of life cycle.
     //Minutes.
     if (cycleMinutes <= 5 && cycleHours == 0 && cycleDays == 0) {
-      cycleTotal = "I've been awake for " + (cycleMinutes) + " minutes.... *yawn* Not much of an early bird.... Not much of a bird....";
+      cycleTotal = "I've been awake for " + (cycleMinutes) + " minutes.... *yawn* Not much of an early bird....";
     }
     else if (cycleHours == 0 && cycleDays == 0){
       if (cycleMinutes == 1) {
@@ -266,7 +266,7 @@ client.on("message", function(message) {
 
   //testing testing, 1-2-3.
   if (command === "import"){
-    xhttp.open("GET", "https://api.challonge.com/v1/tournaments.json?api_key=I0dBjsWuPpieSlJejueLZvu7lzDuQIVwZHLkqAIT" , false);
+    xhttp.open("GET", "https://api.challonge.com/v1/tournaments.json?api_key=" + config.api_key , false);
     xhttp.send();
     console.log(xhttp.status);
     console.log(xhttp.statusText);
