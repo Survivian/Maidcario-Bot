@@ -262,15 +262,31 @@ client.on("message", function(message) {
       }
     });
   }
-
-  //testing testing, 1-2-3.
-  if (command === "import"){
-    xhttp.open("GET", "https://api.challonge.com/v1/tournaments.json?api_key=" + config.api_key , false);
-    xhttp.send();
-    console.log(xhttp.status);
-    console.log(xhttp.statusText);
-    //Shows the JSON in chat.
-    message.channel.send("```JSON\n" + xhttp.responseText + "```");
+  
+  //Providing arguments for making a new import command.
+  if (command === "import") {
+    if (!args[0]) {
+      //If no tournament is specified, then it won't even attempt to run.
+      message.channel.send("I can't import if you don't specify...")
+    } else {
+      //The tournament URL is the first argument after the command. 
+      let tourney = args[0]
+      xhttp.open("GET", "https://api.challonge.com/v1/tournaments/" + tourney + ".json?api_key=" + config.api_key , false);
+      xhttp.send();
+      console.log(xhttp.status);
+      let t = xhttp.status
+      //The status has to be 200 for it to actually respond right. If it's not it won't run.
+      if (t === 200) {
+        var json = JSON.parse(xhttp.responseText);
+        console.log(json);
+        //The stringify makes it the stacked version of a JSON file. Easier to read. Doesn't make it easier to look at per se.
+        fs.writeFileSync('currentT.json' , JSON.stringify(json, null, 2));
+        message.channel.send("I've imported the tournament ~!");
+      } else {
+      //It takes a while, but this is what Maidcario says if the tournament doesn't exist.
+        message.channel.send("I can't import tournaments that don't exist...");
+      }
+    }
   }
 });
 //Login information. Separate file to keep from bad things happening.
