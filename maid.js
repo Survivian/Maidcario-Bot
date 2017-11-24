@@ -265,7 +265,7 @@ client.on("message", function(message) {
 
   //testing testing, 1-2-3.
   if (command === "import"){
-    xhttp.open("GET", "https://Maidcario:I0dBjsWuPpieSlJejueLZvu7lzDuQIVwZHLkqAIT@api.challonge.com/v1/tournaments.json/" , false);
+    xhttp.open("GET", "https://api.challonge.com/v1/tournaments.json?api_key=I0dBjsWuPpieSlJejueLZvu7lzDuQIVwZHLkqAIT" , false);
     xhttp.send();
     console.log(xhttp.status);
     console.log(xhttp.statusText);
