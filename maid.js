@@ -262,19 +262,20 @@ client.on("message", function(message) {
       }
     });
   }
-  
+
   //Providing arguments for making a new import command.
   if (command === "import") {
     if (!args[0]) {
       //If no tournament is specified, then it won't even attempt to run.
-      message.channel.send("I can't import if you don't specify...")
+      message.channel.send("I can't import if you don't specify...");
     } else {
-      //The tournament URL is the first argument after the command. 
-      let tourney = args[0]
+      //The tournament URL is the first argument after the command.
+      let tourney = args[0];
+      message.channel.send("I'll be right back ~! :heart:");
       xhttp.open("GET", "https://api.challonge.com/v1/tournaments/" + tourney + ".json?api_key=" + config.api_key , false);
       xhttp.send();
       console.log(xhttp.status);
-      let t = xhttp.status
+      let t = xhttp.status;
       //The status has to be 200 for it to actually respond right. If it's not it won't run.
       if (t === 200) {
         var json = JSON.parse(xhttp.responseText);
@@ -282,9 +283,22 @@ client.on("message", function(message) {
         //The stringify makes it the stacked version of a JSON file. Easier to read. Doesn't make it easier to look at per se.
         fs.writeFileSync('currentT.json' , JSON.stringify(json, null, 2));
         message.channel.send("I've imported the tournament ~!");
-      } else {
+      }
+      else if (t === 401) {
+        message.channel.send("Whoops! Doesn't look like I can do that... (_Error 401: Unauthorized Access_)");
+      }
+      else if (t === 406) {
+        message.channel.send("Oh my. If you're seeing this, please contact the developers! (_Error 406: Requested format is not supported_)");
+      }
+      else if (t === 422) {
+        message.channel.send("Uh oh. I can't validate that. (Error 422: Validation error)");
+      }
+      else if (t === 500) {
+        message.channel.send("Well, I knocked at the door, but no one answered... I'll have to try again later. Sorry... :confounded: (_Error 500: Server error_)");
+      }
+      else {
       //It takes a while, but this is what Maidcario says if the tournament doesn't exist.
-        message.channel.send("I can't import tournaments that don't exist...");
+        message.channel.send("Uh, I can't import tournaments that don't exist... (404)");
       }
     }
   }
