@@ -5,7 +5,6 @@ const client = new Discord.Client();
 const sql = require("sqlite");
 const config = require("./config.json");
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-const tour = require("./currentT.json")
 sql.open("./score.sqlite");
 
 
@@ -316,6 +315,33 @@ client.on("message", function(message) {
       }
     }
   }
+
+  //Mute command.
+  if (command === "mute") {
+    let perp = message.mentions.members.first();
+    let mute = message.guild.roles.find("name" , "Muted");
+    if (message.member.permissions.has("MANAGE_ROLES")) {
+      //If there's no extra arguments after the command, it doesn't work.
+      if (!args[0]) {
+        message.channel.send("I can't mute if you don't tell me who to mute. :cold_sweat:");
+      } 
+      //If there's no mention after the command, it doesn't work.
+      else if (!perp) {
+        message.channel.send("I can't mute if you don't tell me who to mute. :cold_sweat:");
+      } 
+      //Adds the muted role to the person in question.
+      else {
+        perp.addRole(mute).catch(console.error);
+        message.channel.send("Successfully muted ~!")
+      }
+    } else {
+      message.channel.send("You don't have permission to mute that person....\nPlease notify someone who does.")
+    }
+  }
+
+
+  //Importing test using SQLITE.
+  
 });
 //Login information. Separate file to keep from bad things happening.
 client.login(config.token);
