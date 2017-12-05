@@ -4,23 +4,27 @@ const fs = require("fs");
 const client = new Discord.Client();
 const sql = require("sqlite");
 const config = require("./config.json");
+const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 sql.open("./score.sqlite");
 
 
 //Ready to go!
 client.on("ready", () => {
-  client.user.setGame("==help for more info")
+  client.user.setGame("==help for more info");
   console.log("Chu ~!");
 });
 
-//Reports life time without killing her processing.
+//Variables go here.
+//For life cycle.
 var cycleMinutes = 0;
 var cycleHours = 0;
 var cycleDays = 0;
 var cycleTotal;
-cycles();
+//XMLHttp.
+var xhttp = new XMLHttpRequest();
 
 //New life cycle reporter.
+cycles();
 function cycles() {
   //counting mechanism
     if (cycleMinutes >= 60){
@@ -34,55 +38,55 @@ function cycles() {
 
     //Conditional reporting of life cycle.
     //Minutes.
-    if (cycleMinutes <= 5 && cycleHours == 0 && cycleDays == 0) {
-      cycleTotal = "I've been awake for " + (cycleMinutes) + " minutes.... *yawn* Not much of an early bird.... Not much of a bird....";
+    if (cycleMinutes <= 5 && cycleHours === 0 && cycleDays === 0) {
+      cycleTotal = "I've been awake for " + (cycleMinutes) + " minutes.... *yawn* Not much of an early bird....";
     }
-    else if (cycleHours == 0 && cycleDays == 0){
+    else if (cycleHours === 0 && cycleDays === 0){
       if (cycleMinutes == 1) {
-        cycleTotal = "I've been awake for " + cycleMinutes + " minute ~! Just starting my day."
+        cycleTotal = "I've been awake for " + cycleMinutes + " minute ~! Just starting my day.";
       } else {
         cycleTotal = "I've been awake for " + cycleMinutes + " minutes ~! Just starting my day.";
     }}
 
     //Hours.
-    else if (cycleHours > 0 && cycleDays == 0) {
+    else if (cycleHours > 0 && cycleDays === 0) {
       //Precision.
       if (cycleHours == 1) {
-        if (cycleMinutes == 0) {
-          cycleTotal = "I've been awake for " + (cycleHours) + " hour ~! Ready to serve!"
+        if (cycleMinutes === 0) {
+          cycleTotal = "I've been awake for " + (cycleHours) + " hour ~! Ready to serve!";
         } else if (cycleMinutes == 1) {
-          cycleTotal = "I've been awake for " + (cycleHours) + " hour and " + (cycleMinutes) + " minute ~! Ready to serve!"
+          cycleTotal = "I've been awake for " + (cycleHours) + " hour and " + (cycleMinutes) + " minute ~! Ready to serve!";
         } else if (cycleMinutes > 1) {
-          cycleTotal = "I've been awake for " + (cycleHours) + " hour and " + (cycleMinutes) + " minutes ~! Ready to serve!"
+          cycleTotal = "I've been awake for " + (cycleHours) + " hour and " + (cycleMinutes) + " minutes ~! Ready to serve!";
         }
       } else if (cycleHours > 1) {
-        if (cycleMinutes == 0) {
-          cycleTotal = "I've been awake for " + (cycleHours) + " hours ~! Ready to serve!"
+        if (cycleMinutes === 0) {
+          cycleTotal = "I've been awake for " + (cycleHours) + " hours ~! Ready to serve!";
         } else if (cycleMinutes == 1) {
-          cycleTotal = "I've been awake for " + (cycleHours) + " hours and " + (cycleMinutes) + " minute ~! Ready to serve!"
+          cycleTotal = "I've been awake for " + (cycleHours) + " hours and " + (cycleMinutes) + " minute ~! Ready to serve!";
         } else if (cycleMinutes > 1) {
-          cycleTotal = "I've been awake for " + (cycleHours) + " hours and " + (cycleMinutes) + " minutes ~! Ready to serve!"
+          cycleTotal = "I've been awake for " + (cycleHours) + " hours and " + (cycleMinutes) + " minutes ~! Ready to serve!";
         }
       }
     }
 
     //Days.
     else if (cycleDays > 0) {
-      if (cycleHours == 0 && cycleMinutes == 0) {
+      if (cycleHours === 0 && cycleMinutes === 0) {
         if (cycleDays == 1) {
         cycleTotal = "I've been awake for exactly " + cycleDays + " day ~! How precise of me.";
-      } else if (cycledays > 1) {
+      } else if (cycleDays > 1) {
         cycleTotal = "I've been awake for exactly " + cycleDays + " days ~! *yawn* How precise... of... me.";
       }}
-      else if (cycleHours == 0 && cycleMinutes > 0) {
-        if (cycleDays == 1 && cycleMinutes == 0) {
+      else if (cycleHours === 0 && cycleMinutes > 0) {
+        if (cycleDays == 1 && cycleMinutes === 0) {
         cycleTotal = "I've been awake for " + cycleDays + " day and " + cycleMinutes + " minute ~! Ready to serve!";
       } else if (cycleDays == 1 && cycleMinutes > 1) {
-        cycleTotal = "I've been awake for " + cycleDays + " day and " + cycleMinutes + " minutes ~! Ready to serve!"
+        cycleTotal = "I've been awake for " + cycleDays + " day and " + cycleMinutes + " minutes ~! Ready to serve!";
       } else if (cycleDays > 1 && cycleMinutes > 1){
-        cycleTotal = "I've been awake for " + cycleDays + " days and " + cycleMinutes + " minutes ~! Ready to serve!"
+        cycleTotal = "I've been awake for " + cycleDays + " days and " + cycleMinutes + " minutes ~! Ready to serve!";
       }}
-      else if (cycleHours > 0 && cycleMinutes == 0) {
+      else if (cycleHours > 0 && cycleMinutes === 0) {
         if (cycleDays == 1 && cycleHours == 1) {
           cycleTotal = "I've been awake for " + cycleDays + " day and " + cycleHours + " hour ~! Ready to serve! But I sure am sleepy....";
         } else if (cycleDays == 1 && cycleHours > 1) {
@@ -92,27 +96,27 @@ function cycles() {
       }}
       else if (cycleHours > 0 && cycleMinutes > 0) {
         if (cycleDays == 1) {
-          if (cyclehours == 1 && cycleMinutes > 1) {
-            cycleTotal = "I've been awake for " + cycleDays + " day, " + cycleHours + " hour, and " + (cycleMinutes) + " minutes ~! Ready to serve! But I sure am sleepy...."
-          } else if (cyclehours > 1 && cycleMinutes == 1) {
-            cycleTotal = "I've been awake for " + cycleDays + " day, " + cycleHours + " hours, and " + (cycleMinutes) + " minute ~! Ready to serve! But I sure am sleepy...."
+          if (cycleHours == 1 && cycleMinutes > 1) {
+            cycleTotal = "I've been awake for " + cycleDays + " day, " + cycleHours + " hour, and " + (cycleMinutes) + " minutes ~! Ready to serve! But I sure am sleepy....";
+          } else if (cycleHours > 1 && cycleMinutes == 1) {
+            cycleTotal = "I've been awake for " + cycleDays + " day, " + cycleHours + " hours, and " + (cycleMinutes) + " minute ~! Ready to serve! But I sure am sleepy....";
           } else if (cycleHours == 1 && cycleMinutes == 1) {
-            cycleTotal = "I've been awake for " + cycleDays + " day, " + cycleHours + " hour, and " + (cycleMinutes) + " minute ~! Ready to serve! But I sure am sleepy...."
+            cycleTotal = "I've been awake for " + cycleDays + " day, " + cycleHours + " hour, and " + (cycleMinutes) + " minute ~! Ready to serve! But I sure am sleepy....";
           } else if (cycleHours > 1 && cycleMinutes > 1) {
-            cycleTotal = "I've been awake for " + cycleDays + " day, " + cycleHours + " hours, and " + (cycleMinutes) + " minutes ~! Ready to serve! But I sure am sleepy...."
+            cycleTotal = "I've been awake for " + cycleDays + " day, " + cycleHours + " hours, and " + (cycleMinutes) + " minutes ~! Ready to serve! But I sure am sleepy....";
           }
         } else if (cycleDays > 1) {
-          if (cyclehours == 1 && cycleMinutes > 1) {
-            cycleTotal = "I've been awake for " + cycleDays + " days, " + cycleHours + " hour, and " + (cycleMinutes) + " minutes ~! Ready to serve! But I sure am sleepy...."
-          } else if (cyclehours > 1 && cycleMinutes == 1) {
-            cycleTotal = "I've been awake for " + cycleDays + " days, " + cycleHours + " hours, and " + (cycleMinutes) + " minute ~! Ready to serve! But I sure am sleepy...."
+          if (cycleHours == 1 && cycleMinutes > 1) {
+            cycleTotal = "I've been awake for " + cycleDays + " days, " + cycleHours + " hour, and " + (cycleMinutes) + " minutes ~! Ready to serve! But I sure am sleepy....";
+          } else if (cycleHours > 1 && cycleMinutes == 1) {
+            cycleTotal = "I've been awake for " + cycleDays + " days, " + cycleHours + " hours, and " + (cycleMinutes) + " minute ~! Ready to serve! But I sure am sleepy....";
           } else if (cycleHours == 1 && cycleMinutes == 1) {
-            cycleTotal = "I've been awake for " + cycleDays + " days, " + cycleHours + " hour, and " + (cycleMinutes) + " minute ~! Ready to serve! But I sure am sleepy...."
+            cycleTotal = "I've been awake for " + cycleDays + " days, " + cycleHours + " hour, and " + (cycleMinutes) + " minute ~! Ready to serve! But I sure am sleepy....";
           } else if (cycleHours > 1 && cycleMinutes > 1) {
-            cycleTotal = "I've been awake for " + cycleDays + " days, " + cycleHours + " hours, and " + (cycleMinutes) + " minutes ~! Ready to serve! But I sure am sleepy...."
+            cycleTotal = "I've been awake for " + cycleDays + " days, " + cycleHours + " hours, and " + (cycleMinutes) + " minutes ~! Ready to serve! But I sure am sleepy....";
           }
         }
-      };
+      }
     }
 
     //Wait the proper amount of time before updating. This needs to be at the end, as anything below likely won't get done.
@@ -127,137 +131,155 @@ client.on("message", function(message) {
   const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
   //This variable is mainly used for housekeeping, but I don't have it applied everywhere.
-  var player = message.author
+  var player = message.author;
 
   //commands are in if statements
   //Throw-away command. It's just here to make sure that everything works right.
   if (command === "ping") {
     message.channel.send("Pong ~! :ping_pong:");
-    message.channel.send(cycleTotal)
-  };
-  if (command === "wl") { if (!args[0]) {
-    //I know what this command does, but I have no idea how to use sqlite as a whole.
-    //Since sqlite is basically just better arrays (and is also promise-based) this command is needed to fetch the updated information.
-    sql.get(`SELECT * FROM score WHERE userId ="${message.author.id}"`).then(row => {
-      if (!row) {
-        //The fact that there's even an "if" here is unnecessary. Don't feel like cleaning it up just yet.
-        return message.reply("You haven't won any games yet....")
+    message.channel.send(cycleTotal);
+  }
+
+
+  //Mute command.
+  if (command === "mute") {
+    let perp = message.mentions.members.first();
+    let mute = message.guild.roles.find("name" , "Dunce Cap");
+    if (message.member.permissions.has("MANAGE_ROLES")) {
+      //If there's no extra arguments after the command or a mention, it doesn't work.
+      if (!args[0] || !perp) {
+        message.channel.send("I can't mute if you don't tell me who to mute. :cold_sweat:");
+      } 
+      //Adds the muted role to the person in question.
+      else {
+        perp.addRole(mute).catch(console.error);
+        message.channel.send(perp + " has been muted ~!\nI hope they learn their lesson!");
+      }
+    } else {
+      message.channel.send("You don't have permission to mute that person....\nPlease notify someone who does.");
+    }
+  }
+
+  //Unmute command.
+  if (command === "unmute") {
+    let perp = message.mentions.members.first();
+    let mute = message.guild.roles.find("name" , "Dunce Cap");
+    if (message.member.permissions.has("MANAGE_ROLES")) {
+      //If there's no extra arguments after the command or a mention, it doesn't work.
+      if (!args[0] || !perp) {
+        message.channel.send("I can't mute if you don't tell me who to mute. :cold_sweat:");
+      } 
+      //Adds the muted role to the person in question.
+      else {
+        perp.removeRole(mute).catch(console.error);
+        message.guild.channels.find("name" , "brawlminus").send(perp + " has been unmuted ~!\nBe nice, okay ~?");
+      }
+    } else {
+      message.channel.send("You don't have permission to unmute that person....\nPlease notify someone who does.");
+    }
+  }
+
+  //Kick command.
+  if (command === "kick") {
+    let kck = message.mentions.members.first();
+    if (!message.member.permissions.has("KICK_MEMBERS")) {
+      message.reply("You don’t have enough badges to tell me to do that.");
+    } else if (!args[0] || !kck) {
+      message.channel.send("Like you can’t play soccer without a ball, I can’t kick a person without a name.");
+    } else if (!kck.kickable) {
+      message.reply ("Do you understand how disrespectful it would be to kick someone so high level? :cold_sweat:");
+    } else {
+      let reason = args.slice(1).join(" ");
+      let bm = message.guild.channels.find("name" , "brawlminus");
+      if (!reason) {
+        kck.kick();
+        bm.send(kck + " has been temporarily kicked out.");
+        bm.send("Kicked by " + player.username + ".");
       } else {
-        message.channel.send({embed: {
-          author: {
-            name: "Tournament Scores for " + player.username,
-            icon_url: player.avatarURL
-          },
-          //The "row"s are pulling from the sqlite array. It gets the person's userId and then just pulls from their row until the command is over.
-          //In these instances, it's pulling from the wins, losses, etc. parts of the array and displaying them
-          fields: [{
-            name: "Games Won",
-            value: row.wins
-          },
-          {
-            name: "Games Lost",
-            value: row.losses
-          },
-          {
-            name: "Total Matches",
-            value: row.matches
-          },
-          {
-            name: "Win Percentage",
-            value: row.percent + "%"
-          }]
-        }})
+        kck.kick(reason);
+        bm.send(kck + " has been temporarily kicked out.");
+        bm.send("Reason: " + reason);
       }
-    }).catch(() => {
-      //If it catches something wrong, it'll make a sqlite array for the person that doesn't have one.
-      console.error;
-      sql.run("CREATE TABLE IF NOT EXISTS score (userId TEXT, wins INTEGER, losses INTEGER, percent INTEGER, matches INTEGER)").then(() => {
-        sql.run("INSERT INTO score (userId, wins, losses, percent, matches) VALUES (?, ?, ?, ?, ?)", [player.id, 0, 0, 0, 0])
-      });
-      message.reply("You now have a stats page ~! Type '==wl' again to see it ~<3")
-    }); return
-  } else {
-    //This is just the other form of ==wl.
-    let member = message.mentions.members.first();
-    sql.get(`SELECT * FROM score WHERE userId ="${member.id}"`).then(row => {
-      message.channel.send({embed: {
-        author: {
-          name: "Tournament Scores for " + member.username,
-          icon_url: member.avatarURL
-        },
-        fields: [{
-          name: "Games Won",
-          value: row.wins
-        },
-        {
-          name: "Games Lost",
-          value: row.losses
-        },
-        {
-          name: "Total Matches",
-          value: row.matches
-        },
-        {
-          name: "Win Percentage",
-          value: row.percent + "%"
-        }]
-      }})
-    }).catch(() => {
-      //It won't make a registration for someone because they might not want to be registered.
-      console.error;
-      message.reply(`I can't track someone who's not registered....`)
-      })}
-  };
+    }
+  }
 
-  if (command === "awl") {
-    //This thing is a mess.
-    let member = message.mentions.members.first();
-    let wl = args[1];
-    sql.get(`SELECT * FROM score WHERE userId ="${member.id}"`).then(row => {
-      if (wl === "w") {
-        //These console logs won't be necessary when everything is done.
-        //Mainly to keep track of if the calculations are firing right.
-        console.log(row.wins + (args[2] * 1))
-        //I've noticed that when I turned these into variables, they stacked on each other.
-        console.log((row.wins + (args[2] * 1)) + (row.losses * 1))
-        //When I made "args[2] * 1" a var, it added itself onto the number, not into.
-        console.log((row.wins + (args[2] * 1)) / ((row.wins + (args[2] * 1)) + (row.losses * 1)))
-        //If row.wins = 1 AND a = (arg[2] * 1) = 5, then row.wins + a = 15.
-        sql.run(`UPDATE score SET wins = ${row.wins + (args[2] * 1)},
-        matches = ${(row.wins + (args[2] * 1)) + (row.losses * 1)},
-        percent = ${Math.floor((row.wins + (args[2] * 1)) / ((row.wins + (args[2] * 1)) + (row.losses * 1)) * 1000) / 10}
-        WHERE userId = ${member.id}`)
-        //Which obviously isn't what I want.
-        //Until we can figure out a way to make it not do that and make it look neater, this is what we're working with.
-      };
-      if (wl === "l") {
-        //See above.
-        console.log(row.losses + (args[2] * 1))
-        console.log((row.losses + (args[2] * 1)) + (row.wins * 1))
-        console.log((row.losses + (args[2] * 1)) / ((row.losses + (args[2] * 1)) + (row.wins * 1)))
-        sql.run(`UPDATE score SET losses = ${row.losses + (args[2] * 1)},
-        matches = ${(row.losses + (args[2] * 1)) + (row.wins * 1)},
-        percent = ${Math.floor((row.losses + (args[2] * 1)) / ((row.losses + (args[2] * 1)) + (row.wins * 1)) * 1000) / 10}
-        WHERE userId = ${member.id}`)
-      };
-    })
-  };
 
-  if (command === "swl") {
-    //This is essentially a way to reset scores in case the above starts screwing up.
-    //This will be removed in the official release.
-    let member = message.mentions.members.first();
-    let wl = args[1]
-    let points = args[2]
-    sql.get(`SELECT * FROM score WHERE userId ="${member.id}"`).then(row => {
-      if (wl === "w") {
-        sql.run(`UPDATE score SET wins = ${points} WHERE userId = ${member.id}`);
+  //Ban command.
+  if (command === "ban") {
+    let bnd = message.mentions.members.first();
+    if (!message.member.permissions.has("BAN_MEMBERS")) {
+      message.reply("You don’t have enough badges to tell me to do that.");
+    } else if (!args[0] || !bnd) {
+      message.channel.send("I can’t hammer the nail if you don’t tell me where.");
+    } else if (!bnd.bannable) {
+      message.reply ("They’re too high level! I can’t ban them!");
+    } else {
+      let bm = message.guild.channels.find("name" , "brawlminus");
+      let reason = args.slice(1).join(" ");
+      if (!reason) {
+        bnd.ban();
+        bm.send(bnd + " has been removed permanently.");
+        bm.send("Banned by " + player.username + ".");
+      } else {
+        bnd.ban(reason);
+        bm.send(bnd + " has been removed permanently.");
+        bm.send("Reason: " + reason);
       }
-      if (wl === "l") {
-        sql.run(`UPDATE score SET losses = ${points} WHERE userId = ${member.id}`);
+    }
+  }
+
+  //Pat command. Obvs the best one here.
+  if (command === "pat") {
+    let mem = message.mentions.members.first();
+    if (!args[0] || !mem) {
+      let x = Math.floor(Math.random() * 10) + 1
+      if (x == 1) {
+        message.channel.send("Thank you ~! :heart:");
+      } else if (x == 2) {
+        message.channel.send("Just doing my job ~! :heart:");
+      } else if (x == 3) {
+        message.channel.send("You're too kind.... :heart:");
+      } else if (x == 4) {
+        message.channel.send("It was nothing.... :heart:");
+      } else if (x == 5) {
+        message.channel.send("I'll do good next time too ~! :heart:");
+      } else if (x == 6) {
+        message.channel.send("Glad I didn't let you down ~! :heart:");
+      } else if (x == 7) {
+        message.channel.send("I like being pet ~! :heart:");
+      } else if (x == 8) {
+        message.channel.send("Anything for you guys ~! :heart:");
+      } else if (x == 9) {
+        message.channel.send("Thank you for the praise ~! :heart:");
+      } else if (x == 10) {
+        message.channel.send("I hope I did a good job.... :heart:");
       }
-    });
-  };
+    } else {
+      message.channel.send(mem + ", you got a pat from " + player.username + " ~! :heart:");
+    }
+  }
+
+
+  //F for respects command.
+  if (command === "f") {
+    message.channel.send(player.username + " has paid their respects.");
+  }
+
+
+  //Help command. Separate for people with and without moderation access.
+  if (command === "help") {
+    let modRole = message.guild.roles.find("name" , "Brawl Mods");
+    let masterRole = message.guild.roles.find("name" , "Minus Master");
+    let devRole = message.guild.roles.find("name" , "MinusDev");
+    let perm = message.member.roles;
+    if (perm.has(masterRole.id) || perm.has(modRole.id)) {
+      message.player.send("```==ping: It shows you how long I've been awake ~! Please make sure that I get my sleep....\n==help: That is what you're doing right now. Hehe ~\n==pat:  Pat me and give me praise ~! Ping a friend to give them a pat ~!\n==f:    Pay respects whenever a tragic thing occurs in the server.\n==mute: Gag a person on the server. Great for parties ~! (==unmute is the opposite)\n==kick: Kick a guest from the server. Provide a reason after the person you're kicking (optional).\n==ban:  Ban a guest from the server. Provide a reason after the person you're banning (optional).```");
+    } else if (perm.has(devRole.id)) {
+      message.player.send("```==ping: It shows you how long I've been awake ~! Please make sure that I get my sleep....\n==help: That is what you're doing right now. Hehe ~\n==pat:  Pat me and give me praise ~! Ping a friend to give them a pat ~!\n==f:    Pay respects whenever a tragic thing occurs in the server.\n==kick: Kick a guest from the server. Provide a reason after the person you're kicking (optional).```");
+    } else {
+      message.player.send("```==ping: It shows you how long I've been awake ~! Please make sure that I get my sleep....\n==help: That is what you're doing right now. Hehe ~\n==pat:  Pat me and give me praise ~! Ping a friend to give them a pat ~!\n==f:    Pay respects whenever a tragic thing occurs in the server.```");
+    }
+  }
 });
 //Login information. Separate file to keep from bad things happening.
 client.login(config.token);
