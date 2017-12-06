@@ -268,7 +268,7 @@ client.on("message", function(message) {
 
   //Help command. Separate for people with and without moderation access.
   if (command === "help") {
-    let modRole = message.guild.roles.find("name" , "Brawl Mods");
+    let modRole = message.guild.roles.find("name" , "Moderator");
     let masterRole = message.guild.roles.find("name" , "Minus Master");
     let devRole = message.guild.roles.find("name" , "MinusDev");
     let perm = message.member.roles;
