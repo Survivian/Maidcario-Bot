@@ -2,10 +2,10 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 const client = new Discord.Client();
-const sql = require("sqlite");
+//const sql = require("sqlite");
 const config = require("./config.json");
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-sql.open("./score.sqlite");
+//sql.open("./score.sqlite");
 
 
 //Ready to go!
@@ -153,7 +153,7 @@ client.on("message", function(message) {
       //Adds the muted role to the person in question.
       else {
         perp.addRole(mute).catch(console.error);
-        message.channel.send(perp + " has been muted ~!\nI hope they learn their lesson!");
+        message.guild.channels.find("name" , "brawlminus").send(perp + " has been muted ~!\nI hope they learn their lesson!");
       }
     } else {
       message.channel.send("You don't have permission to mute that person....\nPlease notify someone who does.");
@@ -273,11 +273,11 @@ client.on("message", function(message) {
     let devRole = message.guild.roles.find("name" , "MinusDev");
     let perm = message.member.roles;
     if (perm.has(masterRole.id) || perm.has(modRole.id)) {
-      message.player.send("```==ping: It shows you how long I've been awake ~! Please make sure that I get my sleep....\n==help: That is what you're doing right now. Hehe ~\n==pat:  Pat me and give me praise ~! Ping a friend to give them a pat ~!\n==f:    Pay respects whenever a tragic thing occurs in the server.\n==mute: Gag a person on the server. Great for parties ~! (==unmute is the opposite)\n==kick: Kick a guest from the server. Provide a reason after the person you're kicking (optional).\n==ban:  Ban a guest from the server. Provide a reason after the person you're banning (optional).```");
+      message.member.send("```==ping: It shows you how long I've been awake ~! Please make sure that I get my sleep....\n==help: That is what you're doing right now. Hehe ~\n==pat:  Pat me and give me praise ~! Ping a friend to give them a pat ~!\n==f:    Pay respects whenever a tragic thing occurs in the server.\n==mute: Gag a person on the server. Great for parties ~! (==unmute is the opposite)\n==kick: Kick a guest from the server. Provide a reason after the person you're kicking (optional).\n==ban:  Ban a guest from the server. Provide a reason after the person you're banning (optional).```");
     } else if (perm.has(devRole.id)) {
-      message.player.send("```==ping: It shows you how long I've been awake ~! Please make sure that I get my sleep....\n==help: That is what you're doing right now. Hehe ~\n==pat:  Pat me and give me praise ~! Ping a friend to give them a pat ~!\n==f:    Pay respects whenever a tragic thing occurs in the server.\n==kick: Kick a guest from the server. Provide a reason after the person you're kicking (optional).```");
+      message.member.send("```==ping: It shows you how long I've been awake ~! Please make sure that I get my sleep....\n==help: That is what you're doing right now. Hehe ~\n==pat:  Pat me and give me praise ~! Ping a friend to give them a pat ~!\n==f:    Pay respects whenever a tragic thing occurs in the server.\n==kick: Kick a guest from the server. Provide a reason after the person you're kicking (optional).```");
     } else {
-      message.player.send("```==ping: It shows you how long I've been awake ~! Please make sure that I get my sleep....\n==help: That is what you're doing right now. Hehe ~\n==pat:  Pat me and give me praise ~! Ping a friend to give them a pat ~!\n==f:    Pay respects whenever a tragic thing occurs in the server.```");
+      message.member.send("```==ping: It shows you how long I've been awake ~! Please make sure that I get my sleep....\n==help: That is what you're doing right now. Hehe ~\n==pat:  Pat me and give me praise ~! Ping a friend to give them a pat ~!\n==f:    Pay respects whenever a tragic thing occurs in the server.```");
     }
   }
 });
