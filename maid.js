@@ -152,8 +152,12 @@ client.on("message", function(message) {
       } 
       //Adds the muted role to the person in question.
       else {
+        let reason = args.slice(1).join(" ");
         perp.addRole(mute).catch(console.error);
         message.guild.channels.find("name" , "brawlminus").send(perp + " has been muted ~!\nI hope they learn their lesson!");
+        if (reason) {
+          message.guild.channels.find("name" , "brawlminus").send("Reason: " + reason);
+        }
       }
     } else {
       message.channel.send("You don't have permission to mute that person....\nPlease notify someone who does.");
