@@ -6,6 +6,8 @@ const sql = require("sqlite");
 const config = require("./config.json");
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 sql.open("./score.sqlite");
+sql.open("./tur.sqlite");
+
 
 
 //Ready to go!
@@ -280,27 +282,14 @@ client.on("message", function(message) {
       if (t === 200) {
         var json = JSON.parse(xhttp.responseText);
         console.log(json);
-        //The stringify makes it the stacked version of a JSON file. Easier to read. Doesn't make it easier to look at per se.
-        fs.writeFileSync('currentT.json' , JSON.stringify(json, null, 2));
-        message.channel.send("I've imported the tournament ~!");
-        message.channel.send({embed: {
-          author: {
-            name: ""
-          },
-          fields: [{
-            name: "Tournament Name",
-            value: tour.tournament.name
-          },
-          {
-            name: "Description",
-            value: tour.tournament.description
-          },
-          {
-            name: "URL",
-            value: tour.tournament.full_challonge_url
-          }
-        ]
-        }});
+        let j = json.tournament;
+        let tourn = [(args[0], j.name, j.tournament_type, j.full_challonge_url, j.game_name, j.description, j.participants_count, j.state)]
+        sql.run(`INSERT INTO tur VALUES (?,?,?,?,?,?,?,?)`, tourn).catch(() => {
+          console.error;
+          sql.run("CREATE TABLE IF NOT EXISTS tur (tId TEXT, name TEXT, type TEXT, url TEXT, gName TEXT, desc TEXT, parts TEXT, state TEXT)").then(() => {
+            sql.run("INSERT INTO tur (tId, name, type, url, gName, desc, parts, state) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", tourn);
+          });
+        });
       } else if (t === 401) {
         message.channel.send("Whoops! Doesn't look like I can do that... (_Error 401: Unauthorized Access_)");
       } else if (t === 406) {
@@ -315,6 +304,18 @@ client.on("message", function(message) {
       }
     }
   }
+
+
+  if (command === "show") {
+    if (!args[0]) {
+      message.channel.send("Show what? :question:")
+    } else {
+      sql.get(`SELECT * FROM tur WHERE tId = "${args[0]}"`).then(row => {
+        message.channel.send("Name: " + row.name + "\nTourney Type: " + row.type + "\nURL: " + row.url + "\nGame: " + row.gName + "\nDescription: " + row.desc + "\nParticipant #: " + row.parts + "\nStatus: " + row.state);
+      });
+    }
+  }
+
 
   //Mute command.
   if (command === "mute") {
@@ -338,7 +339,6 @@ client.on("message", function(message) {
       message.channel.send("You don't have permission to mute that person....\nPlease notify someone who does.")
     }
   }
-
 
   //Importing test using SQLITE.
   
