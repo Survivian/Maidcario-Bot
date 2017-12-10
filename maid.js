@@ -283,6 +283,8 @@ client.on("message", function(message) {
     } else {
       message.member.send("```==ping: It shows you how long I've been awake ~! Please make sure that I get my sleep....\n==help: That is what you're doing right now. Hehe ~\n==pat:  Pat me and give me praise ~! Ping a friend to give them a pat ~!\n==f:    Pay respects whenever a tragic thing occurs in the server.```");
     }
+    message.member.send("Credits to Survivian and ThePwnzr for teaching me and Glitch for hosting me here ~!")
+    message.member.send("Ver. 1.0.2")
   }
 });
 //Login information. Separate file to keep from bad things happening.
