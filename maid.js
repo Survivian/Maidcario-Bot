@@ -154,9 +154,9 @@ client.on("message", function(message) {
       else {
         let reason = args.slice(1).join(" ");
         perp.addRole(mute).catch(console.error);
-        message.guild.channels.find("name" , "brawlminus").send(perp + " has been muted ~!\nI hope they learn their lesson!");
+        message.guild.channels.find("name" , "logs").send(perp + " has been muted ~!\nI hope they learn their lesson!");
         if (reason) {
-          message.guild.channels.find("name" , "brawlminus").send("Reason: " + reason);
+          message.guild.channels.find("name" , "logs").send("Reason: " + reason);
         }
       }
     } else {
@@ -176,7 +176,7 @@ client.on("message", function(message) {
       //Adds the muted role to the person in question.
       else {
         perp.removeRole(mute).catch(console.error);
-        message.guild.channels.find("name" , "brawlminus").send(perp + " has been unmuted ~!\nBe nice, okay ~?");
+        message.guild.channels.find("name" , "logs").send(perp + " has been unmuted ~!\nBe nice, okay ~?");
       }
     } else {
       message.channel.send("You don't have permission to unmute that person....\nPlease notify someone who does.");
@@ -194,7 +194,7 @@ client.on("message", function(message) {
       message.reply ("Do you understand how disrespectful it would be to kick someone so high level? :cold_sweat:");
     } else {
       let reason = args.slice(1).join(" ");
-      let bm = message.guild.channels.find("name" , "brawlminus");
+      let bm = message.guild.channels.find("name" , "logs");
       if (!reason) {
         kck.kick();
         bm.send(kck + " has been temporarily kicked out.");
@@ -218,7 +218,7 @@ client.on("message", function(message) {
     } else if (!bnd.bannable) {
       message.reply ("They’re too high level! I can’t ban them!");
     } else {
-      let bm = message.guild.channels.find("name" , "brawlminus");
+      let bm = message.guild.channels.find("name" , "logs");
       let reason = args.slice(1).join(" ");
       if (!reason) {
         bnd.ban();
