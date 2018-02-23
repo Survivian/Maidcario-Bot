@@ -4,8 +4,11 @@
   "description": "",
   "main": "maid.js",
   "dependencies": {
+    "challonge": "^2.1.0",
+    "discord-eco": "0.0.10",
     "discord.js": "^11.2.1",
     "enmap": "^0.4.2",
+    "jshint": "^2.9.5",
     "sqlite": "^2.8.0",
     "xmlhttprequest": "^1.8.0"
   },

@@ -2,10 +2,12 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 const client = new Discord.Client();
-//const sql = require("sqlite");
+const sql = require("sqlite");
 const config = require("./config.json");
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+const economy = require("discord-eco");
 //sql.open("./score.sqlite");
+sql.open("./eco.sqlite");
 
 
 //Ready to go!
@@ -149,6 +151,7 @@ client.on("message", function(message) {
       //If there's no extra arguments after the command or a mention, it doesn't work.
       if (!args[0] || !perp) {
         message.channel.send("I can't mute if you don't tell me who to mute. :cold_sweat:");
+        return;
       } 
       //Adds the muted role to the person in question.
       else {
@@ -161,7 +164,9 @@ client.on("message", function(message) {
       }
     } else {
       message.channel.send("You don't have permission to mute that person....\nPlease notify someone who does.");
+      return;
     }
+    message.delete();
   }
 
   //Unmute command.
@@ -172,6 +177,7 @@ client.on("message", function(message) {
       //If there's no extra arguments after the command or a mention, it doesn't work.
       if (!args[0] || !perp) {
         message.channel.send("I can't mute if you don't tell me who to mute. :cold_sweat:");
+        return;
       } 
       //Adds the muted role to the person in question.
       else {
@@ -179,8 +185,10 @@ client.on("message", function(message) {
         message.guild.channels.find("name" , "logs").send(perp + " has been unmuted ~!\nBe nice, okay ~?");
       }
     } else {
-      message.channel.send("You don't have permission to unmute that person....\nPlease notify someone who does.");
+      message.channel.send("You don't have permission to unmute that person....\nPlease notify someone who does."); 
+      return;
     }
+    message.delete();
   }
 
   //Kick command.
@@ -188,10 +196,13 @@ client.on("message", function(message) {
     let kck = message.mentions.members.first();
     if (!message.member.permissions.has("KICK_MEMBERS")) {
       message.reply("You don’t have enough badges to tell me to do that.");
+      return;
     } else if (!args[0] || !kck) {
       message.channel.send("Like you can’t play soccer without a ball, I can’t kick a person without a name.");
+      return;
     } else if (!kck.kickable) {
       message.reply ("Do you understand how disrespectful it would be to kick someone so high level? :cold_sweat:");
+      return;
     } else {
       let reason = args.slice(1).join(" ");
       let bm = message.guild.channels.find("name" , "logs");
@@ -205,6 +216,7 @@ client.on("message", function(message) {
         bm.send("Reason: " + reason);
       }
     }
+    message.delete();
   }
 
 
@@ -213,10 +225,13 @@ client.on("message", function(message) {
     let bnd = message.mentions.members.first();
     if (!message.member.permissions.has("BAN_MEMBERS")) {
       message.reply("You don’t have enough badges to tell me to do that.");
+      return;
     } else if (!args[0] || !bnd) {
       message.channel.send("I can’t hammer the nail if you don’t tell me where.");
+      return;
     } else if (!bnd.bannable) {
       message.reply ("They’re too high level! I can’t ban them!");
+      return;
     } else {
       let bm = message.guild.channels.find("name" , "logs");
       let reason = args.slice(1).join(" ");
@@ -230,6 +245,7 @@ client.on("message", function(message) {
         bm.send("Reason: " + reason);
       }
     }
+    message.delete();
   }
 
   //Pat command. Obvs the best one here.
@@ -270,6 +286,233 @@ client.on("message", function(message) {
   }
 
 
+  if (command === "bal") {
+    sql.get(`SELECT * FROM eco WHERE Id ="${player.id}"`).then((row) => {
+      if (!row) {
+        sql.run("CREATE TABLE IF NOT EXISTS eco (Id TEXT, state INTEGER)").then(async () => {
+          await sql.run("INSERT INTO eco (Id, state) VALUES (?, ?)", [player.id, 1]);
+          await economy.updateBalance(player.id, 100).then((i) => {
+            message.channel.send("Welcome to the PokéMaid Banking System ~!\nYou get a complimentary **100** :mcoin: for opening your first account!\nDon't spend it all in once place ~");
+          });  
+        });
+      } else if (row.state === 1) {
+        economy.fetchBalance(player.id).then((i) => {
+          var embed = new Discord.RichEmbed()
+            .setTitle(`PokéMaid Banking System`)
+            .setThumbnail(player.avatarURL)
+            .setColor(0xad28d6)
+            .addField(`Balance for: ${player.username}`, `${i.money} :mcoin:`)
+            .setFooter("System Handled by Maidevoir", "https://cdn.discordapp.com/attachments/383698784053362692/387317737799680003/image.jpg");
+          message.channel.send(embed);
+        });
+      }
+    }).catch(() => {
+      sql.run("CREATE TABLE IF NOT EXISTS eco (Id TEXT, state INTEGER)").then(async () => {
+        await sql.run("INSERT INTO eco (Id, state) VALUES (?, ?)", [player.id, 1]);
+        await economy.updateBalance(player.id, 100).then((i) => {
+          message.channel.send("Welcome to the PokéMaid Banking System ~!\nYou get a complimentary **100** :mcoin: for opening your first account!\nDon't spend it all in once place ~");
+        });
+      });
+    });
+    return
+  }
+
+  if (command === "bet") {
+    var mem = message.mentions.members.first();
+    var apt = 0
+    var mun = 0
+    var mco = args[1];
+    const yes = "🇾";
+    const no = "🇳";
+    const trans = message.guild.channels.find("name", "transactions");
+    if (!mem) {
+      message.channel.send("Who do you want to bet with? I can't just message everyone...");
+      return;
+    } else if (mem.id === player.id) {
+      message.channel.send("Why would you think that would work?");
+      return;
+    } else if (isNaN(args[1])) {
+      message.channel.send("I can't accept anything that isn't an MCoin value...");
+      return;
+    } else if (args[1] <= 0) {
+      message.channel.send("Very funny.");
+    } else {  
+      economy.fetchBalance(player.id).then(i => {
+        if (i.money < mco) {
+          mun++;
+        } else return;
+      }).then(() => {
+        if (mun === 1) {
+          message.channel.send("You don't have enough funds for that!");
+          throw new Error("nofunds");
+          return;
+        }
+      }).then(async() => {
+        await mem.send(`${player.username} has wagered **${mco}** MCoin with you!\nDo you accept? (Please choose one option. This request will process in 30 seconds.)`).then(async function (message) {
+          await message.react(yes);
+          await message.react(no);
+          await message.awaitReactions(reaction => reaction.emoji.name === yes || reaction.emoji.name === no, {time: 30 * 1000});
+          let accept = message.reactions.find(reaction => reaction.emoji.name === yes).count-1;
+          let decline = message.reactions.find(reaction => reaction.emoji.name === no).count-1;
+          console.log(`Accept = ${accept} and Decline = ${decline}`);
+          if (accept === 1) {
+            if (decline === 0) {
+              player.send(`Your wager has been accepted!`);
+              message.channel.send("You have accepted their wager!");
+              apt++;
+              return;  
+            } else if (decline === 1) {
+              player.send(`Your wager has been declined due to it not being taken seriously.`);
+              message.channel.send("...Didn't I say to choose only one option?");
+              return;  
+            }
+          } else if (accept === 0) {
+            if (decline === 1) {
+              player.send(`Your wager has been declined.`);
+              message.channel.send("You have declined their wager.");
+              return;
+            } else if (decline === 0) {
+              player.send(`Your wager has been auto-declined.`);
+              message.channel.send("You have auto-declined the wager.");
+              return;  
+            }
+          }
+        });
+      }).then(() => {
+        if (apt === 1) {
+          message.channel.send(`${mem} has accepted the wager of **${mco}** :mcoin: from ${player}!`);
+          return
+        }
+      }).catch(err => {
+        if (err.message === "nofunds") {
+          return
+        }
+      });
+    }
+  }
+
+  if (command === "pay") {
+    var mem = message.mentions.members.first();
+    var mun = 0;
+    var mco = args[1];
+    const trans = message.guild.channels.find("name", "transactions");
+    if (!mem) {  
+      message.channel.send("Who are you planning on paying? I can't read your mind.");  
+      return;  
+    } else if (mem.id === player.id) {
+      message.channel.send("Paying youself isn't funny. It's just sad.");
+      return;
+    } else if (isNaN(mco)) {
+      message.channel.send("You haven't provided a valid MCoin value.");
+      return;
+    } else if (mco <= 0) {
+      message.channel.send("Very funny.");
+      return;
+    } else {
+      economy.fetchBalance(player.id).then(i => {
+        if (i.money < mco) {
+          mun++;
+        }
+      }).then(() => {
+        if (mun === 1) {
+          message.channel.send("You don't have enough money to pay!");
+          throw new Error("nofunds");
+        } else return;
+      }).then(async () => {
+        await economy.updateBalance(mem.id, mco);
+        await economy.updateBalance(player.id, -mco);
+        await trans.send(`${player} payed ${mem} **${mco}** MCoin!`);
+      }).catch(err => {
+        if (err.message === "nofunds") {
+          return;
+        } else return;
+      });
+    }  
+  }
+
+  if (command === "roll") {
+    var mco = args[0];
+    var mun = 0
+    if (!mco) {
+      message.channel.send("Rolling nothing isn't an option...");
+      return;
+    } else if (isNaN(mco)) {
+      message.channel.send("That wasn't a proper amount of MCoin.");
+      return;
+    } else if (mco <= 0) {
+      message.channel.send("Very funny.");
+    } else {
+      message.channel.startTyping(1);
+      economy.fetchBalance(player.id).then(i => {
+        if (i.money < mco) {
+          mun++;
+        } else return;
+      }).then(() => {
+        if (mun === 1) {
+          message.channel.send("You can't bet more than you have!");
+          message.channel.stopTyping(true);
+          throw new Error("nofunds");
+        } else return;
+      }).then(async() => {
+        let x = Math.floor(Math.random() * 100) + 1
+        if (x >= 1 && x <= 75) {
+          await economy.updateBalance(player.id, -mco)
+          await message.channel.send(`Your roll was unsuccessful....\n**-${mco}** :mcoin:`);
+          await message.channel.stopTyping(true);
+          return;
+        } else if (x >= 76 && x <= 90) {
+          await message.channel.send(`You lost nothing. Could've been worse.\n**+0** :mcoin:`);
+          await message.channel.stopTyping(true);
+          return;
+        } else if (x >= 91 && x <= 98) {
+          await economy.updateBalance(player.id, mco);
+          await message.channel.send(`You got **2x** your roll back! Nice one!\n**+${mco}** :mcoin:`);
+          await message.channel.stopTyping(true);
+          return;
+        } else if (x >= 99 && x <= 100) {
+          await economy.updateBalance(player.id, mco * 2);
+          await message.channel.send(`You got **3x** your roll back! Incredible!!!\n**+${mco * 2}** :mcoin:`);
+          await message.channel.stopTyping(true);
+          return;
+        }
+      }).catch((err) => {
+        if (err.message === "nofunds") {
+          return;
+        }
+      });
+    }
+  }
+
+  if (command === "give") {
+    const god = "169222386275581953"
+    const trans = message.guild.channels.find("name", "transactions");
+    var mem = message.mentions.members.first();
+    var mco = args[1];
+    if (player.id !== god) {
+      message.channel.send("I only answer that request to the true god of the economy.");
+      return;
+    } else if (!mem) {
+      message.channel.send("Who's the lucky person getting the present?");
+      return;
+    } else if (isNaN(mco)) {
+      message.channel.send("I need a number to give someone anything!");
+      return;
+    } else if (mco === 0) {
+      message.channel.send("I would rather not joke about this sort of thing.");
+      return;
+    } else if (mco < 0) {
+      economy.updateBalance(mem.id, mco).then(i => {
+        trans.send(`The Grand Master Econimal, ${player}, has taken away **${mco}** from ${mem}!`);
+      });
+    } else {
+      economy.updateBalance(mem.id, mco).then(i => {
+        trans.send(`The Grand Master Econimal, ${player}, has given **${mco}** to ${mem}!`);
+      });
+    }
+  }
+
+
+
   //Help command. Separate for people with and without moderation access.
   if (command === "help") {
     let modRole = message.guild.roles.find("name" , "Moderator");
@@ -284,7 +527,7 @@ client.on("message", function(message) {
       message.member.send("```==ping: It shows you how long I've been awake ~! Please make sure that I get my sleep....\n==help: That is what you're doing right now. Hehe ~\n==pat:  Pat me and give me praise ~! Ping a friend to give them a pat ~!\n==f:    Pay respects whenever a tragic thing occurs in the server.```");
     }
     message.member.send("Credits to Survivian and ThePwnzr for teaching me and Glitch for hosting me here ~!")
-    message.member.send("Ver. 1.0.2")
+    message.member.send("Ver. 1.1.0")
   }
 });
 //Login information. Separate file to keep from bad things happening.
