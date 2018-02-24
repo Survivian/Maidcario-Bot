@@ -292,7 +292,7 @@ client.on("message", function(message) {
         sql.run("CREATE TABLE IF NOT EXISTS eco (Id TEXT, state INTEGER)").then(async () => {
           await sql.run("INSERT INTO eco (Id, state) VALUES (?, ?)", [player.id, 1]);
           await economy.updateBalance(player.id, 100).then((i) => {
-            message.channel.send("Welcome to the PokéMaid Banking System ~!\nYou get a complimentary **100** :mcoin: for opening your first account!\nDon't spend it all in once place ~");
+            message.channel.send("Welcome to the PokéMaid Banking System ~!\nYou get a complimentary **100** <:mcoin:409061630710906880> for opening your first account!\nDon't spend it all in once place ~");
           });  
         });
       } else if (row.state === 1) {
@@ -301,7 +301,7 @@ client.on("message", function(message) {
             .setTitle(`PokéMaid Banking System`)
             .setThumbnail(player.avatarURL)
             .setColor(0xad28d6)
-            .addField(`Balance for: ${player.username}`, `${i.money} :mcoin:`)
+            .addField(`Balance for: ${player.username}`, `${i.money} <:mcoin:409061630710906880>`)
             .setFooter("System Handled by Maidevoir", "https://cdn.discordapp.com/attachments/383698784053362692/387317737799680003/image.jpg");
           message.channel.send(embed);
         });
@@ -310,7 +310,7 @@ client.on("message", function(message) {
       sql.run("CREATE TABLE IF NOT EXISTS eco (Id TEXT, state INTEGER)").then(async () => {
         await sql.run("INSERT INTO eco (Id, state) VALUES (?, ?)", [player.id, 1]);
         await economy.updateBalance(player.id, 100).then((i) => {
-          message.channel.send("Welcome to the PokéMaid Banking System ~!\nYou get a complimentary **100** :mcoin: for opening your first account!\nDon't spend it all in once place ~");
+          message.channel.send("Welcome to the PokéMaid Banking System ~!\nYou get a complimentary **100** <:mcoin:409061630710906880> for opening your first account!\nDon't spend it all in once place ~");
         });
       });
     });
@@ -380,7 +380,7 @@ client.on("message", function(message) {
         });
       }).then(() => {
         if (apt === 1) {
-          message.channel.send(`${mem} has accepted the wager of **${mco}** :mcoin: from ${player}!`);
+          trans.send(`${mem} has accepted the wager of **${mco}** <:mcoin:409061630710906880> from ${player}!`);
           return
         }
       }).catch(err => {
@@ -400,7 +400,7 @@ client.on("message", function(message) {
       message.channel.send("Who are you planning on paying? I can't read your mind.");  
       return;  
     } else if (mem.id === player.id) {
-      message.channel.send("Paying youself isn't funny. It's just sad.");
+      message.channel.send("Paying yourself isn't funny. It's just sad.");
       return;
     } else if (isNaN(mco)) {
       message.channel.send("You haven't provided a valid MCoin value.");
@@ -421,6 +421,7 @@ client.on("message", function(message) {
       }).then(async () => {
         await economy.updateBalance(mem.id, mco);
         await economy.updateBalance(player.id, -mco);
+		await message.channel.send("Transaction complete!"); 
         await trans.send(`${player} payed ${mem} **${mco}** MCoin!`);
       }).catch(err => {
         if (err.message === "nofunds") {
@@ -457,21 +458,21 @@ client.on("message", function(message) {
         let x = Math.floor(Math.random() * 100) + 1
         if (x >= 1 && x <= 75) {
           await economy.updateBalance(player.id, -mco)
-          await message.channel.send(`Your roll was unsuccessful....\n**-${mco}** :mcoin:`);
+          await message.channel.send(`Your roll was unsuccessful....\n**-${mco}** <:mcoin:409061630710906880>`);
           await message.channel.stopTyping(true);
           return;
         } else if (x >= 76 && x <= 90) {
-          await message.channel.send(`You lost nothing. Could've been worse.\n**+0** :mcoin:`);
+          await message.channel.send(`You lost nothing. Could've been worse.\n**+0** <:mcoin:409061630710906880>`);
           await message.channel.stopTyping(true);
           return;
         } else if (x >= 91 && x <= 98) {
           await economy.updateBalance(player.id, mco);
-          await message.channel.send(`You got **2x** your roll back! Nice one!\n**+${mco}** :mcoin:`);
+          await message.channel.send(`You got **2x** your roll back! Nice one!\n**+${mco}** <:mcoin:409061630710906880>`);
           await message.channel.stopTyping(true);
           return;
         } else if (x >= 99 && x <= 100) {
           await economy.updateBalance(player.id, mco * 2);
-          await message.channel.send(`You got **3x** your roll back! Incredible!!!\n**+${mco * 2}** :mcoin:`);
+          await message.channel.send(`You got **3x** your roll back! Incredible!!!\n**+${mco * 2}** <:mcoin:409061630710906880>`);
           await message.channel.stopTyping(true);
           return;
         }
