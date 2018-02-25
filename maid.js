@@ -6,7 +6,6 @@ const sql = require("sqlite");
 const config = require("./config.json");
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const economy = require("discord-eco");
-//sql.open("./score.sqlite");
 sql.open("./eco.sqlite");
 
 
@@ -335,7 +334,7 @@ client.on("message", function(message) {
       message.channel.send("I can't accept anything that isn't an MCoin value...");
       return;
     } else if (args[1] <= 0) {
-      message.channel.send("Very funny.");
+      message.channel.send("What's the point of betting, then?");
     } else {  
       economy.fetchBalance(player.id).then(i => {
         if (i.money < mco) {
@@ -348,7 +347,8 @@ client.on("message", function(message) {
           return;
         }
       }).then(async() => {
-        await mem.send(`${player.username} has wagered **${mco}** MCoin with you!\nDo you accept? (Please choose one option. This request will process in 30 seconds.)`).then(async function (message) {
+        await message.channel.send("Wager sent!");
+        await mem.send(`${player.username} has wagered **${Math.floor(mco)}** MCoin with you!\nDo you accept? (Please choose one option. This request will process in 30 seconds.)`).then(async function (message) {
           await message.react(yes);
           await message.react(no);
           await message.awaitReactions(reaction => reaction.emoji.name === yes || reaction.emoji.name === no, {time: 30 * 1000});
@@ -380,7 +380,7 @@ client.on("message", function(message) {
         });
       }).then(() => {
         if (apt === 1) {
-          trans.send(`${mem} has accepted the wager of **${mco}** <:mcoin:409061630710906880> from ${player}!`);
+          trans.send(`${mem} has accepted the wager of **${Math.floor(mco)}** <:mcoin:409061630710906880> from ${player}!`);
           return
         }
       }).catch(err => {
@@ -406,7 +406,7 @@ client.on("message", function(message) {
       message.channel.send("You haven't provided a valid MCoin value.");
       return;
     } else if (mco <= 0) {
-      message.channel.send("Very funny.");
+      message.channel.send("Those kind of jokes aren't funny.");
       return;
     } else {
       economy.fetchBalance(player.id).then(i => {
@@ -421,8 +421,8 @@ client.on("message", function(message) {
       }).then(async () => {
         await economy.updateBalance(mem.id, mco);
         await economy.updateBalance(player.id, -mco);
-		await message.channel.send("Transaction complete!"); 
-        await trans.send(`${player} payed ${mem} **${mco}** MCoin!`);
+        await message.channel.send("Transaction complete!"); 
+        await trans.send(`${player} payed ${mem} **${Math.floor(mco)}** MCoin!`);
       }).catch(err => {
         if (err.message === "nofunds") {
           return;
@@ -441,7 +441,7 @@ client.on("message", function(message) {
       message.channel.send("That wasn't a proper amount of MCoin.");
       return;
     } else if (mco <= 0) {
-      message.channel.send("Very funny.");
+      message.channel.send("How about I roll *your* money into the negatives?");
     } else {
       message.channel.startTyping(1);
       economy.fetchBalance(player.id).then(i => {
@@ -458,7 +458,7 @@ client.on("message", function(message) {
         let x = Math.floor(Math.random() * 100) + 1
         if (x >= 1 && x <= 75) {
           await economy.updateBalance(player.id, -mco)
-          await message.channel.send(`Your roll was unsuccessful....\n**-${mco}** <:mcoin:409061630710906880>`);
+          await message.channel.send(`Your roll was unsuccessful....\n**-${Math.floor(mco)}** <:mcoin:409061630710906880>`);
           await message.channel.stopTyping(true);
           return;
         } else if (x >= 76 && x <= 90) {
@@ -467,12 +467,12 @@ client.on("message", function(message) {
           return;
         } else if (x >= 91 && x <= 98) {
           await economy.updateBalance(player.id, mco);
-          await message.channel.send(`You got **2x** your roll back! Nice one!\n**+${mco}** <:mcoin:409061630710906880>`);
+          await message.channel.send(`You got **2x** your roll back! Nice one!\n**+${Math.floor(mco)}** <:mcoin:409061630710906880>`);
           await message.channel.stopTyping(true);
           return;
         } else if (x >= 99 && x <= 100) {
           await economy.updateBalance(player.id, mco * 2);
-          await message.channel.send(`You got **3x** your roll back! Incredible!!!\n**+${mco * 2}** <:mcoin:409061630710906880>`);
+          await message.channel.send(`You got **3x** your roll back! Incredible!!!\n**+${Math.floor(mco) * 2}** <:mcoin:409061630710906880>`);
           await message.channel.stopTyping(true);
           return;
         }
@@ -521,14 +521,14 @@ client.on("message", function(message) {
     let devRole = message.guild.roles.find("name" , "MinusDev");
     let perm = message.member.roles;
     if (perm.has(masterRole.id) || perm.has(modRole.id)) {
-      message.member.send("```==ping: It shows you how long I've been awake ~! Please make sure that I get my sleep....\n==help: That is what you're doing right now. Hehe ~\n==pat:  Pat me and give me praise ~! Ping a friend to give them a pat ~!\n==f:    Pay respects whenever a tragic thing occurs in the server.\n==mute: Gag a person on the server. Great for parties ~! (==unmute is the opposite)\n==kick: Kick a guest from the server. Provide a reason after the person you're kicking (optional).\n==ban:  Ban a guest from the server. Provide a reason after the person you're banning (optional).```");
+      message.member.send("```==ping: It shows you how long I've been awake ~! Please make sure that I get my sleep....\n==help: That is what you're doing right now. Hehe ~\n==pat:  Pat me and give me praise ~! Ping a friend to give them a pat ~!\n==f:    Pay respects whenever a tragic thing occurs in the server.\n==bal:  Check how much MCoin you have ~! Never hurts to look.\n==bet:  Wager with another person for their MCoin! Usage: ==bet [mention] [amount]\n==pay:  Be a kind soul and give away your MCoin! Usage: ==pay [mention] [amount]\n==roll: Use your accumulated MCoin to wager on a chance to win big money ~! Usage: ==roll [amount]\n==mute: Gag a person on the server. Great for parties ~! (==unmute is the opposite)\n==kick: Kick a guest from the server. Provide a reason after the person you're kicking (optional).\n==ban:  Ban a guest from the server. Provide a reason after the person you're banning (optional).```");
     } else if (perm.has(devRole.id)) {
-      message.member.send("```==ping: It shows you how long I've been awake ~! Please make sure that I get my sleep....\n==help: That is what you're doing right now. Hehe ~\n==pat:  Pat me and give me praise ~! Ping a friend to give them a pat ~!\n==f:    Pay respects whenever a tragic thing occurs in the server.\n==kick: Kick a guest from the server. Provide a reason after the person you're kicking (optional).```");
+      message.member.send("```==ping: It shows you how long I've been awake ~! Please make sure that I get my sleep....\n==help: That is what you're doing right now. Hehe ~\n==pat:  Pat me and give me praise ~! Ping a friend to give them a pat ~!\n==f:    Pay respects whenever a tragic thing occurs in the server.\n==bal:  Check how much MCoin you have ~! Never hurts to look.\n==bet:  Wager with another person for their MCoin! Usage: ==bet [mention] [amount]\n==pay:  Be a kind soul and give away your MCoin! Usage: ==pay [mention] [amount]\n==roll: Use your accumulated MCoin to wager on a chance to win big money ~! Usage: ==roll [amount]\n==kick: Kick a guest from the server. Provide a reason after the person you're kicking (optional).```");
     } else {
-      message.member.send("```==ping: It shows you how long I've been awake ~! Please make sure that I get my sleep....\n==help: That is what you're doing right now. Hehe ~\n==pat:  Pat me and give me praise ~! Ping a friend to give them a pat ~!\n==f:    Pay respects whenever a tragic thing occurs in the server.```");
+      message.member.send("```==ping: It shows you how long I've been awake ~! Please make sure that I get my sleep....\n==help: That is what you're doing right now. Hehe ~\n==pat:  Pat me and give me praise ~! Ping a friend to give them a pat ~!\n==f:    Pay respects whenever a tragic thing occurs in the server.\n==bal:  Check how much MCoin you have ~! Never hurts to look.\n==bet:  Wager with another person for their MCoin! Usage: ==bet [mention] [amount]\n==pay:  Be a kind soul and give away your MCoin! Usage: ==pay [mention] [amount]\n==roll: Use your accumulated MCoin to wager on a chance to win big money ~! Usage: ==roll [amount]```");
     }
     message.member.send("Credits to Survivian and ThePwnzr for teaching me and Glitch for hosting me here ~!")
-    message.member.send("Ver. 1.1.0")
+    message.member.send("Ver. 1.2.1");
   }
 });
 //Login information. Separate file to keep from bad things happening.
