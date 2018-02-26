@@ -156,6 +156,8 @@ client.on("message", function(message) {
       else {
         let reason = args.slice(1).join(" ");
         perp.addRole(mute).catch(console.error);
+        //The "logs" is the channel that it searches for.
+        //If you have a different channel for keeping track of moderation, change that.
         message.guild.channels.find("name" , "logs").send(perp + " has been muted ~!\nI hope they learn their lesson!");
         if (reason) {
           message.guild.channels.find("name" , "logs").send("Reason: " + reason);
@@ -194,6 +196,7 @@ client.on("message", function(message) {
   if (command === "kick") {
     let kck = message.mentions.members.first();
     if (!message.member.permissions.has("KICK_MEMBERS")) {
+      //Flavor text.
       message.reply("You don’t have enough badges to tell me to do that.");
       return;
     } else if (!args[0] || !kck) {
@@ -204,12 +207,15 @@ client.on("message", function(message) {
       return;
     } else {
       let reason = args.slice(1).join(" ");
+      //"bm" is the moderation channel for a specific Discord server.
+      //Change the "logs" part if the moderation channel for you is different.
       let bm = message.guild.channels.find("name" , "logs");
       if (!reason) {
         kck.kick();
         bm.send(kck + " has been temporarily kicked out.");
         bm.send("Kicked by " + player.username + ".");
       } else {
+        //kick(reason) logs within Discord what the reason for a kick was.
         kck.kick(reason);
         bm.send(kck + " has been temporarily kicked out.");
         bm.send("Reason: " + reason);
@@ -251,7 +257,9 @@ client.on("message", function(message) {
   if (command === "pat") {
     let mem = message.mentions.members.first();
     if (!args[0] || !mem) {
+      //This picks a random number between 1 & 10 and stores it into x.
       let x = Math.floor(Math.random() * 10) + 1
+      //Everything below here is just flavor text.
       if (x == 1) {
         message.channel.send("Thank you ~! :heart:");
       } else if (x == 2) {
@@ -286,6 +294,7 @@ client.on("message", function(message) {
 
 
   if (command === "bal") {
+    //Looks in the 'eco.sqlite' file and find the row that matches the command sender's Discord ID.
     sql.get(`SELECT * FROM eco WHERE Id ="${player.id}"`).then((row) => {
       if (!row) {
         sql.run("CREATE TABLE IF NOT EXISTS eco (Id TEXT, state INTEGER)").then(async () => {
@@ -317,17 +326,23 @@ client.on("message", function(message) {
   }
 
   if (command === "bet") {
+    //One of the biggest commands here.
     var mem = message.mentions.members.first();
+    //'apt' is a var for people who accept bets.
     var apt = 0
+    //'mun' is just a throw away variable for throwing errors
     var mun = 0
     var mco = args[1];
+    //'yes and 'no' are the Unicode characters for :regional_indicator_y/n: Discord Emojis.
     const yes = "🇾";
     const no = "🇳";
+    //'transactions' is a different specific moderation channel for the Discord. Change it to whatever you want.
     const trans = message.guild.channels.find("name", "transactions");
     if (!mem) {
       message.channel.send("Who do you want to bet with? I can't just message everyone...");
       return;
     } else if (mem.id === player.id) {
+      //This is if they try to bet with themselves. Which is dumb.
       message.channel.send("Why would you think that would work?");
       return;
     } else if (isNaN(args[1])) {
@@ -338,11 +353,13 @@ client.on("message", function(message) {
     } else {  
       economy.fetchBalance(player.id).then(i => {
         if (i.money < mco) {
+          //This catches if the person trying to bet is attempting to bet more than they have.
           mun++;
         } else return;
       }).then(() => {
         if (mun === 1) {
           message.channel.send("You don't have enough funds for that!");
+          //This Error breaks the 'then' chain so that it stops continuing it.
           throw new Error("nofunds");
           return;
         }
